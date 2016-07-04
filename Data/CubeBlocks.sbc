@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <CubeBlocks>
+    <Definition xsi:type="MyObjectBuilder_BeaconDefinition">
+      <Id>
+        <TypeId>Beacon</TypeId>
+        <SubtypeId>Cloaking_Device_Large</SubtypeId>
+      </Id>
+      <DisplayName>Cloaking Device</DisplayName>
+      <Icon>Textures\Icon\CloakingDeviceIcon.dds</Icon>
+      <CubeSize>Large</CubeSize>
+      <BlockTopology>TriangleMesh</BlockTopology>
+      <Size x="2" y="4" z="2" />
+      <ModelOffset x="0" y="0" z="0" />
+      <Model>Models\Cloaking Device_Large.mwm</Model>
+      <Components>
+        <Component Subtype="SteelPlate" Count="20" />
+        <Component Subtype="Construction" Count="40" />
+        <Component Subtype="Detector" Count="200" />
+        <Component Subtype="Superconductor" Count="500" />
+        <Component Subtype="Computer" Count="100" />
+        <Component Subtype="LargeTube" Count="40" />
+        <Component Subtype="SteelPlate" Count="80" />
+      </Components>
+      <CriticalComponent Subtype="Computer" Index="0" />
+      <MountPoints>
+	   <MountPoint EndY="2.06" EndX="1.30" StartY="0.65" StartX="0.70" Side="Front"/>
+	   <MountPoint EndY="2.06" EndX="1.30" StartY="0.65" StartX="0.70" Side="Back"/>
+	   <MountPoint EndY="2.06" EndX="1.30" StartY="0.65" StartX="0.70" Side="Left"/>
+	   <MountPoint EndY="2.06" EndX="1.30" StartY="0.65" StartX="0.70" Side="Right"/>
+	   <MountPoint EndY="1.64" EndX="1.64" StartY="0.36" StartX="0.36" Side="Bottom"/>
+      </MountPoints>
+      <BuildProgressModels>
+	   <Model File="Models\Cloaking Device_Large_Constr1.mwm" BuildPercentUpperBound="0.33"/>
+	   <Model File="Models\Cloaking Device_Large_Constr2.mwm" BuildPercentUpperBound="0.67"/>
+	   <Model File="Models\Cloaking Device_Large_Constr3.mwm" BuildPercentUpperBound="1.00"/>
+      </BuildProgressModels>
+      <BlockPairName>Cloaking Device</BlockPairName>
+      <EdgeType>Light</EdgeType>
+      <ResourceSinkGroup>Utility</ResourceSinkGroup>
+      <BuildTimeSeconds>50</BuildTimeSeconds>
+      <DamageEffectId>214</DamageEffectId>
+      <DamagedSound>ParticleElectrical</DamagedSound>
+    </Definition>
+    <Definition xsi:type="MyObjectBuilder_BeaconDefinition">
+      <Id>
+        <TypeId>Beacon</TypeId>
+        <SubtypeId>Cloaking_Device_Small</SubtypeId>
+      </Id>
+      <DisplayName>Cloaking Device</DisplayName>
+      <Icon>Textures\Icon\CloakingDeviceIcon.dds</Icon>
+      <CubeSize>Small</CubeSize>
+      <BlockTopology>TriangleMesh</BlockTopology>
+      <Size x="2" y="4" z="2" />
+      <ModelOffset x="0" y="0" z="0" />
+      <Model>Models\Cloaking Device_Small.mwm</Model>
+      <Components>
+        <Component Subtype="SteelPlate" Count="4" />
+        <Component Subtype="Construction" Count="8" />
+        <Component Subtype="MetalGrid" Count="5" />
+        <Component Subtype="Detector" Count="4" />
+        <Component Subtype="Superconductor" Count="5" />
+        <Component Subtype="Computer" Count="20" />
+        <Component Subtype="LargeTube" Count="10" />
+        <Component Subtype="SteelPlate" Count="10" />
+      </Components>
+      <CriticalComponent Subtype="Computer" Index="0" />
+	  <MountPoints>
+	   <MountPoint EndY="2.06" EndX="1.30" StartY="0.65" StartX="0.70" Side="Front"/>
+	   <MountPoint EndY="2.06" EndX="1.30" StartY="0.65" StartX="0.70" Side="Back"/>
+	   <MountPoint EndY="2.06" EndX="1.30" StartY="0.65" StartX="0.70" Side="Left"/>
+	   <MountPoint EndY="2.06" EndX="1.30" StartY="0.65" StartX="0.70" Side="Right"/>
+	   <MountPoint EndY="1.64" EndX="1.64" StartY="0.36" StartX="0.36" Side="Bottom"/>
+	  </MountPoints>
+      <BuildProgressModels>
+	   <Model File="Models\Cloaking Device_Small_Constr1.mwm" BuildPercentUpperBound="0.33"/>
+	   <Model File="Models\Cloaking Device_Small_Constr2.mwm" BuildPercentUpperBound="0.67"/>
+	   <Model File="Models\Cloaking Device_Small_Constr3.mwm" BuildPercentUpperBound="1.00"/>
+      </BuildProgressModels>
+      <BlockPairName>Cloaking Device</BlockPairName>
+      <MirroringY>Z</MirroringY>
+      <MirroringZ>Y</MirroringZ>
+      <EdgeType>Light</EdgeType>
+      <ResourceSinkGroup>Utility</ResourceSinkGroup>
+      <BuildTimeSeconds>15</BuildTimeSeconds>
+      <DamageEffectId>214</DamageEffectId>
+      <DamagedSound>ParticleElectrical</DamagedSound>
+    </Definition>
+
+  </CubeBlocks>
+  <BlockPositions>
+    <BlockPosition>
+      <Name>Beacon</Name>
+      <Position>
+        <X>-3</X>
+        <Y>-3</Y>
+      </Position>
+  </BlockPosition>
+  </BlockPositions>
+</Definitions>
