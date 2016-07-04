@@ -10,7 +10,7 @@
       <Icon>Textures\Icon\CloakingDeviceIcon.dds</Icon>
       <CubeSize>Large</CubeSize>
       <BlockTopology>TriangleMesh</BlockTopology>
-      <Size x="2" y="4" z="2" />
+      <Size x="2" y="2" z="2" />
       <ModelOffset x="0" y="0" z="0" />
       <Model>Models\Cloaking Device_Large.mwm</Model>
       <Components>
@@ -51,7 +51,7 @@
       <Icon>Textures\Icon\CloakingDeviceIcon.dds</Icon>
       <CubeSize>Small</CubeSize>
       <BlockTopology>TriangleMesh</BlockTopology>
-      <Size x="2" y="4" z="2" />
+      <Size x="2" y="2" z="2" />
       <ModelOffset x="0" y="0" z="0" />
       <Model>Models\Cloaking Device_Small.mwm</Model>
       <Components>
