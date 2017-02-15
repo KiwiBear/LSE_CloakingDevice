@@ -61,7 +61,7 @@ namespace LSE.Guns.Missile
                         var cubeGrid = LSE.CloakingDevice.CloakingDevice.Cloaked.FirstOrDefault<IMyEntity>((x) => x == targetGrid);
                         if (cubeGrid != null)
                         {
-                            ((Sandbox.ModAPI.IMyLargeTurretBase)Entity).ResetTargetingToDefault();
+                            ((Sandbox.ModAPI.Ingame.IMyLargeTurretBase)Entity).ResetTargetingToDefault();
                         }
                     }
                     catch
@@ -110,7 +110,7 @@ namespace LSE.Guns.Interior
                         var cubeGrid = LSE.CloakingDevice.CloakingDevice.Cloaked.FirstOrDefault<IMyEntity>((x) => x == targetGrid);
                         if (cubeGrid != null)
                         {
-                            ((Sandbox.ModAPI.IMyLargeTurretBase)Entity).ResetTargetingToDefault();
+                            ((Sandbox.ModAPI.Ingame.IMyLargeTurretBase)Entity).ResetTargetingToDefault();
                         }
                     }
                     catch
@@ -159,7 +159,7 @@ namespace LSE.Guns.Gatling
                         var cubeGrid = LSE.CloakingDevice.CloakingDevice.Cloaked.FirstOrDefault<IMyEntity>((x) => x == targetGrid);
                         if (cubeGrid != null)
                         {
-                            ((Sandbox.ModAPI.IMyLargeTurretBase)Entity).ResetTargetingToDefault();
+                            ((Sandbox.ModAPI.Ingame.IMyLargeTurretBase)Entity).ResetTargetingToDefault();
                         }
                     }
                     catch

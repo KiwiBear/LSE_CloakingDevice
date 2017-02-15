@@ -27,7 +27,7 @@ using VRage.Game.ModAPI;
 
 namespace LSE.CloakingDevice
 {
-    [MyEntityComponentDescriptor(typeof(MyObjectBuilder_Beacon), new string[] { "Cloaking_Device_Large", "Cloaking_Device_Small", "Cloaking_Device_Small_v2", "Cloaking_Device_v2" })]
+    [MyEntityComponentDescriptor(typeof(MyObjectBuilder_OreDetector), new string[] { "Cloaking_Device_Large", "Cloaking_Device_Small", "Cloaking_Device_Small_v2", "Cloaking_Device_v2" })]
     public class CloakingDevice : GameLogicComponent
     {
         public static HashSet<IMyEntity> Cloaked = new HashSet<IMyEntity>();
@@ -35,7 +35,7 @@ namespace LSE.CloakingDevice
         public static float CLOAKING_RATIO = 9000.0f;
         public static float SHOOT_MULTIPLIER = 3.0f;
 
-        public Control.SwitchControl<Sandbox.ModAPI.IMyBeacon> SwitchControl;
+        public Control.SwitchControl<Sandbox.ModAPI.Ingame.IMyOreDetector> SwitchControl;
 
         public bool FirstStart = true;
         public long LastTick = 0;
@@ -52,6 +52,9 @@ namespace LSE.CloakingDevice
 
             LastTick = DateTime.UtcNow.Ticks;
             LastCubeGrid = CubeBlock.CubeGrid;
+
+            //Sink = new Sandbox.Game.EntityComponents.MyResourceSinkComponent();
+            //CubeBlock.Components.Add<Sandbox.Game.EntityComponents.MyResourceSinkComponent>(Sink);
             CubeBlock.Components.TryGet<Sandbox.Game.EntityComponents.MyResourceSinkComponent>(out Sink);
 
             Sink.SetRequiredInputFuncByType(PowerDefinitionId, CalcRequiredPower);
@@ -86,7 +89,7 @@ namespace LSE.CloakingDevice
 			
 			foreach (var cockpit in cockpits)
 			{
-				var controller = (Sandbox.ModAPI.IMyShipController)cockpit.FatBlock;
+				var controller = (Sandbox.ModAPI.Ingame.IMyShipController)cockpit.FatBlock;
 				if (controller.IsUnderControl) {
 					return true;
 				}
@@ -105,7 +108,6 @@ namespace LSE.CloakingDevice
                 FirstStart = false;
             }
 
-            var ob = (MyObjectBuilder_Beacon)CubeBlock.GetObjectBuilderCubeBlock();
 
             if (IsWorking() && ((IMyFunctionalBlock)Entity).Enabled)
             {
@@ -213,32 +215,41 @@ namespace LSE.CloakingDevice
 
         }
 
-
-        
-
-        bool ShowControlBeaconControls(IMyTerminalBlock block)
+        bool ShowControlOreDetectorControls(IMyTerminalBlock block)
         {
-            return block.BlockDefinition.SubtypeName.Contains("Beacon");
+            return block.BlockDefinition.SubtypeName.Contains("OreDetector");
         }
+
+
+
+        void RemoveOreUI()
+        {
+            List<IMyTerminalAction> actions = new List<IMyTerminalAction>();
+            MyAPIGateway.TerminalControls.GetActions<Sandbox.ModAPI.Ingame.IMyOreDetector>(out actions);
+            var actionAntenna = actions.First((x) => x.Id.ToString() == "BroadcastUsingAntennas");
+            actionAntenna.Enabled = ShowControlOreDetectorControls;
+
+            List<IMyTerminalControl> controls = new List<IMyTerminalControl>();
+            MyAPIGateway.TerminalControls.GetControls<Sandbox.ModAPI.Ingame.IMyOreDetector>(out controls);
+            var antennaControl = controls.First((x) => x.Id.ToString() == "BroadcastUsingAntennas");
+            antennaControl.Visible = ShowControlOreDetectorControls;
+
+            try
+            {
+                var radiusControl = controls.First((x) => x.Id.ToString() == "Range");
+                radiusControl.Visible = ShowControlOreDetectorControls;
+            }
+            catch
+            {
+            }
+
+        }
+
 
         void CreateUI()
         {
-
-            var controls = new List<IMyTerminalControl>();
-            MyAPIGateway.TerminalControls.GetControls<Sandbox.ModAPI.IMyBeacon>(out controls);
-            var radiusControl = controls.First((x) => x.Id.ToString() == "Radius");
-            radiusControl.Visible = ShowControlBeaconControls;
-            ((IMyTerminalControlSlider)radiusControl).Setter((IMyFunctionalBlock)Entity, 1);
-
-            var actions = new List<IMyTerminalAction>();
-            MyAPIGateway.TerminalControls.GetActions<Sandbox.ModAPI.IMyBeacon>(out actions);
-            var radiusAction0 = actions.First((x) => x.Id.ToString() == "IncreaseRadius");
-            var radiusAction1 = actions.First((x) => x.Id.ToString() == "DecreaseRadius");
-            radiusAction0.Enabled = ShowControlBeaconControls;
-            radiusAction1.Enabled = ShowControlBeaconControls;
-
-
-            SwitchControl = new ServerSwitch<Sandbox.ModAPI.IMyBeacon>(
+            RemoveOreUI();
+            SwitchControl = new ServerSwitch<Sandbox.ModAPI.Ingame.IMyOreDetector>(
                 (IMyFunctionalBlock)Entity,
                 "StayCloakOnOff",
                 "Stay cloaked when not controlled:",

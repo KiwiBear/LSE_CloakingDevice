@@ -39,7 +39,7 @@ namespace LSE.Network2
     #endregion
 
     [MySessionComponentDescriptor(MyUpdateOrder.BeforeSimulation)]
-    class NetworkSession : MySessionComponentBase
+    class NetworkSessionCloakingDevice : MySessionComponentBase
     {
         bool _isInitialized = false;
 
@@ -550,7 +550,7 @@ namespace LSE.Network2
                 block.GameLogic.GetAs<LSE.CloakingDevice.CloakingDevice>().SwitchControl.Setter((IMyTerminalBlock)block, State);
 
                 var controls = new List<IMyTerminalControl>();
-                MyAPIGateway.TerminalControls.GetControls<Sandbox.ModAPI.IMyBeacon>(out controls);
+                MyAPIGateway.TerminalControls.GetControls<Sandbox.ModAPI.IMyUpgradableBlock>(out controls);
                 controls = controls.FindAll((x) => x.Id.Contains("StayCloakOnOff"));
                 foreach (var control in controls)
                 {
@@ -560,6 +560,8 @@ namespace LSE.Network2
 
         }
     }
+
+
 
 
     #region Message Splitting
