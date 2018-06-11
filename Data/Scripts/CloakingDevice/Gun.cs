@@ -64,7 +64,7 @@ namespace LSE.Guns
                     var cubeGrid = LSE.CloakingDevice.CloakingDevice.Cloaked.FirstOrDefault<IMyEntity>((x) => x == targetGrid);
                     if (cubeGrid != null)
                     {
-                        (turret.ResetTargetingToDefault();
+                        turret.ResetTargetingToDefault();
                     }
                 }
                 catch (Exception e)
