@@ -1,11 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 using System.Runtime.InteropServices;
 using System.Collections;
-
 using Sandbox.Common;
 using Sandbox.Common.ObjectBuilders;
 using Sandbox.Definitions;
@@ -22,14 +21,22 @@ using VRageMath;
 using Sandbox.Engine.Multiplayer;
 using Sandbox.ModAPI.Interfaces.Terminal;
 using VRage.Game.ModAPI;
+using VRage.Utils;
 
-
-
-
-namespace LSE.Guns.Missile
+namespace LSE.Guns
 {
-    [MyEntityComponentDescriptor(typeof(MyObjectBuilder_LargeMissileTurret))]
-    public class MissileGunScrambler : MyGameLogicComponent
+    // Modified by Whiplash141 to account for ModAPI changes - 6/11/18
+
+    [MyEntityComponentDescriptor(typeof(MyObjectBuilder_LargeMissileTurret), false)]
+    public class MissileTurretScrambler : TurretScrambler { }
+
+    [MyEntityComponentDescriptor(typeof(MyObjectBuilder_InteriorTurret), false)]
+    public class InteriorTurretScrambler : TurretScrambler { }
+
+    [MyEntityComponentDescriptor(typeof(MyObjectBuilder_LargeGatlingTurret), false)]
+    public class GatlingTurretScrambler : TurretScrambler { }
+
+    public class TurretScrambler : MyGameLogicComponent
     {
         private MyObjectBuilder_EntityBase m_objectBuilder;
         public override MyObjectBuilder_EntityBase GetObjectBuilder(bool copy = false)
@@ -41,134 +48,30 @@ namespace LSE.Guns.Missile
         {
             base.Init(objectBuilder);
             m_objectBuilder = objectBuilder;
+            NeedsUpdate |= MyEntityUpdateEnum.EACH_FRAME;
         }
 
-
-        public override void UpdateAfterSimulation()
+        public override void UpdateBeforeSimulation()
         {
-            var ob = (MyObjectBuilder_UserControllableGun)((IMyCubeBlock)Entity).GetObjectBuilderCubeBlock();
-            var turretBuilder = ((MyObjectBuilder_TurretBase)ob);
-            if (turretBuilder.Target != 0)
+            var turret = (IMyLargeTurretBase)Entity; 
+            var target = turret.Target;
+            if (target != null)
             {
-                IMyEntity target;
-                MyAPIGateway.Entities.TryGetEntityById(turretBuilder.Target, out target);
-                if (target != null)
+                try
                 {
-                    try
-                    {
-                        var targetGrid = ((IMyCubeBlock)target).CubeGrid;
+                    var targetGrid = ((IMyCubeBlock)target).CubeGrid;
 
-                        var cubeGrid = LSE.CloakingDevice.CloakingDevice.Cloaked.FirstOrDefault<IMyEntity>((x) => x == targetGrid);
-                        if (cubeGrid != null)
-                        {
-                            ((Sandbox.ModAPI.Ingame.IMyLargeTurretBase)Entity).ResetTargetingToDefault();
-                        }
-                    }
-                    catch
+                    var cubeGrid = LSE.CloakingDevice.CloakingDevice.Cloaked.FirstOrDefault<IMyEntity>((x) => x == targetGrid);
+                    if (cubeGrid != null)
                     {
+                        turret.ResetTargetingToDefault();
                     }
+                }
+                catch (Exception e)
+                {
+                    MyLog.Default.WriteLine(e);
                 }
             }
         }
     }
 }
-
-
-namespace LSE.Guns.Interior
-{
-    [MyEntityComponentDescriptor(typeof(MyObjectBuilder_InteriorTurret))]
-    public class MissileGunScrambler : MyGameLogicComponent
-    {
-        private MyObjectBuilder_EntityBase m_objectBuilder;
-        public override MyObjectBuilder_EntityBase GetObjectBuilder(bool copy = false)
-        {
-            return copy ? (MyObjectBuilder_EntityBase)m_objectBuilder.Clone() : m_objectBuilder;
-        }
-
-        public override void Init(MyObjectBuilder_EntityBase objectBuilder)
-        {
-            base.Init(objectBuilder);
-            m_objectBuilder = objectBuilder;
-        }
-
-
-
-        public override void UpdateAfterSimulation()
-        {
-            var ob = (MyObjectBuilder_UserControllableGun)((IMyCubeBlock)Entity).GetObjectBuilderCubeBlock();
-            var turretBuilder = ((MyObjectBuilder_TurretBase)ob);
-            if (turretBuilder.Target != 0)
-            {
-                IMyEntity target;
-                MyAPIGateway.Entities.TryGetEntityById(turretBuilder.Target, out target);
-                if (target != null)
-                {
-                    try
-                    {
-                        var targetGrid = ((IMyCubeBlock)target).CubeGrid;
-
-                        var cubeGrid = LSE.CloakingDevice.CloakingDevice.Cloaked.FirstOrDefault<IMyEntity>((x) => x == targetGrid);
-                        if (cubeGrid != null)
-                        {
-                            ((Sandbox.ModAPI.Ingame.IMyLargeTurretBase)Entity).ResetTargetingToDefault();
-                        }
-                    }
-                    catch
-                    {
-                    }
-                }
-            }
-        }
-    }
-}
-
-
-namespace LSE.Guns.Gatling
-{
-    [MyEntityComponentDescriptor(typeof(MyObjectBuilder_LargeGatlingTurret))]
-    public class MissileGunScrambler : MyGameLogicComponent
-    {
-        private MyObjectBuilder_EntityBase m_objectBuilder;
-        public override MyObjectBuilder_EntityBase GetObjectBuilder(bool copy = false)
-        {
-            return copy ? (MyObjectBuilder_EntityBase)m_objectBuilder.Clone() : m_objectBuilder;
-        }
-
-        public override void Init(MyObjectBuilder_EntityBase objectBuilder)
-        {
-            base.Init(objectBuilder);
-            m_objectBuilder = objectBuilder;
-        }
-
-
-
-        public override void UpdateAfterSimulation()
-        {
-            var ob = (MyObjectBuilder_UserControllableGun)((IMyCubeBlock)Entity).GetObjectBuilderCubeBlock();
-            var turretBuilder = ((MyObjectBuilder_TurretBase)ob);
-            if (turretBuilder.Target != 0)
-            {
-                IMyEntity target;
-                MyAPIGateway.Entities.TryGetEntityById(turretBuilder.Target, out target);
-                if (target != null)
-                {
-                    try
-                    {
-                        var targetGrid = ((IMyCubeBlock)target).CubeGrid;
-
-                        var cubeGrid = LSE.CloakingDevice.CloakingDevice.Cloaked.FirstOrDefault<IMyEntity>((x) => x == targetGrid);
-                        if (cubeGrid != null)
-                        {
-                            ((Sandbox.ModAPI.Ingame.IMyLargeTurretBase)Entity).ResetTargetingToDefault();
-                        }
-                    }
-                    catch
-                    {
-                    }
-                }
-            }
-        }
-    }
-}
-
-
